@@ -1,3 +1,4 @@
+from flask import jsonify
 from core import db
 from core.libs import helpers
 
@@ -11,3 +12,8 @@ class Teacher(db.Model):
 
     def __repr__(self):
         return '<Teacher %r>' % self.id
+    
+    @classmethod
+    def get_list_of_teachers(cls):
+        db_qeury = db.session.query(cls)
+        return db_qeury

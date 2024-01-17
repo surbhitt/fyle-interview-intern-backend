@@ -1,6 +1,7 @@
 import enum
 from core import db
 from core.apis.decorators import AuthPrincipal
+from core.apis.responses import APIResponse
 from core.libs import helpers, assertions
 from core.models.teachers import Teacher
 from core.models.students import Student
@@ -25,7 +26,7 @@ class Assignment(db.Model):
     id = db.Column(db.Integer, db.Sequence('assignments_id_seq'), primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey(Student.id), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey(Teacher.id), nullable=True)
-    content = db.Column(db.Text)
+    content = db.Column(db.Text, nullable=False)
     grade = db.Column(BaseEnum(GradeEnum))
     state = db.Column(BaseEnum(AssignmentStateEnum), default=AssignmentStateEnum.DRAFT, nullable=False)
     created_at = db.Column(db.TIMESTAMP(timezone=True), default=helpers.get_utc_now, nullable=False)
@@ -77,12 +78,18 @@ class Assignment(db.Model):
         assignment = Assignment.get_by_id(_id)
         assertions.assert_found(assignment, 'No assignment with this id was found')
         assertions.assert_valid(grade is not None, 'assignment with empty grade cannot be graded')
+        assertions.assert_valid(assignment.state == AssignmentStateEnum.SUBMITTED)
 
         assignment.grade = grade
         assignment.state = AssignmentStateEnum.GRADED
         db.session.flush()
 
         return assignment
+
+    @classmethod
+    def get_assignments_submitted_or_graded(cls):
+        # return db.session.query(cls)
+        return cls.filter(cls.state == AssignmentStateEnum.SUBMITTED or cls.state == AssignmentStateEnum.GRADED).all()
 
     @classmethod
     def get_assignments_by_student(cls, student_id):
