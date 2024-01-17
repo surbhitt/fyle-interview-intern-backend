@@ -40,7 +40,7 @@ def submit_assignment(p, incoming_payload):
     submit_assignment_payload = AssignmentSubmitSchema().load(incoming_payload)
 
     assignment = Assignment.get_by_id(submit_assignment_payload.id)
-    assertions.assert_valid(assignment.state != AssignmentStateEnum.SUBMITTED, '')
+    assertions.assert_valid(assignment.state != AssignmentStateEnum.SUBMITTED, 'only a draft assignment can be submitted')
 
     submitted_assignment = Assignment.submit(
         _id=submit_assignment_payload.id,

@@ -59,7 +59,6 @@ def test_get_assignments_in_various_states():
     # Execute the SQL query and compare the result with the expected result
     with open('tests/SQL/number_of_assignments_per_state.sql', encoding='utf8') as fo:
         sql = fo.read()
-
     sql_result = db.session.execute(text(sql)).fetchall()
     for itr, result in enumerate(expected_result):
         assert result[0] == sql_result[itr][0]
