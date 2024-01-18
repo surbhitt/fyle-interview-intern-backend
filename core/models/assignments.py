@@ -86,7 +86,10 @@ class Assignment(db.Model):
 
     @classmethod
     def get_assignments_submitted_or_graded(cls):
-        # return db.session.query(cls)
+        """ 
+            Returns assignments that are either SUBMITTED or GRADED
+            used in /principal/assignments
+        """
         return cls.filter(cls.state == AssignmentStateEnum.SUBMITTED or cls.state == AssignmentStateEnum.GRADED).all()
 
     @classmethod
