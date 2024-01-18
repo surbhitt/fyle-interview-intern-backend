@@ -17,35 +17,15 @@ def list_assignments(p):
     principal_assignments_dump = AssignmentSchema().dump(principal_assignments, many=True)
     return APIResponse.respond(data=principal_assignments_dump)
 
-
-# ======= ==== === == = == TODO: REMOVE THIS 
-@principal_assignments_resources.route('/assignments/trial', methods=['POST'], strict_slashes=False)
-@decorators.accept_payload
-@decorators.authenticate_principal
-def list_assignment(p, incoming_payload):
-    """Returns list of assignments"""
-    print("\n\n---------------principal/assignments/grade-------------------\n\n")
-    response = jsonify({
-        'hello':'what'
-        })
-    return response 
-
-
 @principal_assignments_resources.route('/assignments/grade', methods={'POST'}, strict_slashes=False)
 @decorators.accept_payload
 @decorators.authenticate_principal
 def grade_assignments(p, incoming_payload):
     """Grade assignment"""
-    
-    # response = jsonify({
-    #     'hello': 'this is response'
-    #     })
-    # return response
-
     grade_assignment_payload = AssignmentGradeSchema().load(incoming_payload)
     
     assignment = Assignment.get_by_id(grade_assignment_payload.id)
-    assertions.assert_found(assignment, 'No assignment found with this id was found')
+    assertions.assert_found(assignment, 'No assignment found with this id')
     assertions.assert_valid(assignment.state == AssignmentStateEnum.GRADED or assignment.state == AssignmentStateEnum.SUBMITTED, 'Assignment in draft state can not be graded')
 
     graded_assignment = Assignment.mark_grade(
