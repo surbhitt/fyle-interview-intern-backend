@@ -28,7 +28,7 @@ bash run.sh
 
 ### Run Tests
 
-```console
+```
 # for tests
 bash test
 
