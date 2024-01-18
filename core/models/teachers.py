@@ -15,5 +15,8 @@ class Teacher(db.Model):
     
     @classmethod
     def get_list_of_teachers(cls):
-        db_qeury = db.session.query(cls)
-        return db_qeury
+        """
+            Return list of all the teachers
+            used in /principal/teachers
+        """
+        return db.session.query(cls)
