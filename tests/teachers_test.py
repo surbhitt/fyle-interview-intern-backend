@@ -1,3 +1,7 @@
+from core.apis.assignments.schema import AssignmentGradeSchema
+from core.models.assignments import GradeEnum
+
+
 def test_get_assignments_teacher_1(client, h_teacher_1):
     response = client.get(
         '/teacher/assignments',
@@ -100,3 +104,18 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
     data = response.json
 
     assert data['error'] == 'FyleError'
+    
+
+def test_grade_asignment_valid(client, h_teacher_2):
+    response = client.post(
+            "/teacher/assignments/grade",
+            headers=h_teacher_2,
+            json ={
+                "id": 2,
+                "grade": "D"
+                })
+
+    data = response.json['data']
+
+    assert response.status_code == 200
+    assert data['grade'] == GradeEnum.D
