@@ -1,9 +1,11 @@
 #!/bin/bash
 
-
-
-pytest -vvv -s tests/
+# to have a fresh db every time before the tests are ran
+# maybe a mock db creation and testing agaist it
+# would be a more robust system
 
 export FLASK_APP=core/server.py
 rm core/store.sqlite3
 flask db upgrade -d core/migrations/
+
+pytest -vvv -s tests/
