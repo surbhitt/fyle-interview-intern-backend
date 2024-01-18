@@ -14,9 +14,7 @@ app.register_blueprint(student_assignments_resources, url_prefix='/student')
 app.register_blueprint(teacher_assignments_resources, url_prefix='/teacher')
 app.register_blueprint(principal_assignments_resources, url_prefix='/principal')
 app.register_blueprint(principal_teachers_resources, url_prefix='/principal/teachers')
-# TODO1: the principal endpoint will be added here
 
-# home route for
 @app.route('/')
 def ready():
     response = jsonify({
