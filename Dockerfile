@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM python:3.8
 
 WORKDIR /app
@@ -9,6 +10,6 @@ COPY run.sh run.sh
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["./run.sh"]
+CMD ["bash", "run.sh"]
 
 EXPOSE 5000
